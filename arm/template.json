@@ -11,7 +11,7 @@
         },
         "botweb_repo_url": {
             "type": "string",
-            "defaultValue": "https://github.com/denniszielke/hackbotsimple.git",
+            "defaultValue": "https://github.com/zordid/hackbotsimple.git",
             "metadata": {
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
