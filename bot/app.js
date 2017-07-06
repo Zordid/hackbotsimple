@@ -46,6 +46,34 @@ bot.dialog(dialogs.helpExplorer.id, dialogs.helpExplorer.dialog)
 bot.dialog(dialogs.adamsExplorer.id, dialogs.adamsExplorer.dialog)
     .triggerAction({ matches: new RegExp(dialogs.adamsExplorer.title, 'i') });
 
+bot.on('conversationUpdate', function (message) {
+    console.log(message);
+
+    name = message.membersAdded[0].name;
+    
+    var reply = new builder.Message()
+        .address(message.address)
+        .text("Hello %s... Thanks for adding me.", name || 'there');
+    bot.send(reply);
+   
+});
+
+// Add first run dialog
+bot.dialog('firstRun', function (session) {    
+    session.userData.firstRun = true;
+    session.send("Hello...").endDialog();
+}).triggerAction({
+    onFindAction: function (context, callback) {
+        // Only trigger if we've never seen user before
+        if (!context.userData.firstRun) {
+            // Return a score of 1.1 to ensure the first run dialog wins
+            callback(null, 1.1);
+        } else {
+            callback(null, 0.0);
+        }
+    }
+});
+
 // reset stuck dialogs in case of versioning
 bot.use(builder.Middleware.dialogVersion({ version: 0.2, resetCommand: /^reset/i }));
 
